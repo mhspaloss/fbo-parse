@@ -1,5 +1,3 @@
-var dailyOpps = [];
-
 //to run node.js, read data from file and over-write dailyOpps above.
 //Comment out to use above data structure for dailyOpps and Chrome debugging tools
 
@@ -85,6 +83,12 @@ var myCorpus = {
     COMBINE: [''],
 };
 
+//JSON records from daily file
+var dailyOpps = [];
+
+//JSON records after filtering
+var resultOutput = [];
+
 // For loop over all files (assumes I have every day in the date range), process and then add output array to master to be written to the output files
 var date = new Date('November 19, 2017'),
     d = date.getDate(),
@@ -107,10 +111,13 @@ for (var i = 0; i < 5; i++) {
     var result = dailyOpps.filter(isInteresting);
     console.log('Number of JSON records through the filter: ', result.length);
 
+    //	var resultOutput.push(result);
+    resultOutput = resultOutput.concat(result);
+
     //Create corpus text by opportunity status.  Extract the title and description text
     // to build topic model training files
     result.forEach(function(element) {
-        myCorpus[Object.keys(element[0])[0]] += 'SUBJECT ' + element[0][Object.keys(element[0])[0]]['SUBJECT'] + element[0][Object.keys(element[0])[0]]['DESC'];
+        myCorpus[Object.keys(element[0])[0]] += 'SUBJECTTAG ' + element[0][Object.keys(element[0])[0]]['SUBJECT'] + '\n' + element[0][Object.keys(element[0])[0]]['DESC'];
     });
 
     //End for loop over all Files
@@ -127,4 +134,4 @@ fs.writeFileSync('Output Files/Matt_Test_COMBINE.txt', myCorpus.COMBINE);
 //  fs.write('Output Files/Matt_Test_COMBINE.csv', myCorpus.COMBINE, 'a');
 
 //write out master array of objects to JSON files - last file only?
-fs.writeFileSync('Output Files/Matt_Test.json', JSON.stringify(result));
+fs.writeFileSync('Output Files/Matt_Test.json', JSON.stringify(resultOutput));
