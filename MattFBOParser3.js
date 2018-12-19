@@ -1,13 +1,5 @@
-//to run node.js, read data from file and over-write dailyOpps above.
-//Comment out to use above data structure for dailyOpps and Chrome debugging tools
-
 var fs = require("fs");
 var parser = require("./index");
-
-//fs.writeFileSync('Output Files/20181105.json', JSON.stringify(parser.parse(fs.readFileSync('Input Files/FBOFeed20181105', 'UTF-8'))));
-
-//Read JSON file and create dailyOpps object.
-//var dailyOpps = parser.parse(fs.readFileSync('Input Files/FBOFeed20181105', 'UTF-8'));
 
 //filter out badly formed or uninteresting opportunities
 function isInteresting(element) {
@@ -72,7 +64,6 @@ function isInteresting(element) {
 
 };
 
-
 //set starting date to the first date for which I have a file
 
 
@@ -89,12 +80,13 @@ var dailyOpps = [];
 //JSON records after filtering
 var resultOutput = [];
 
-// For loop over all files (assumes I have every day in the date range), process and then add output array to master to be written to the output files
+//Read JSON file and create dailyOpps object.
 var date = new Date('November 19, 2017'),
     d = date.getDate(),
     m = date.getMonth(), //January is momth 0 in JavaScripty = date.getFullYear();
     y = date.getFullYear();
 
+// For loop over all files (assumes I have every day in the date range), process and then add output array to master to be written to the output files
 for (var i = 0; i < 5; i++) {
     var curdate = new Date(y, m, d + i);
     var curMonth = ("0" + (curdate.getMonth() + 1)).slice(-2); //increment month by 1, add leading zero if month 1-9
@@ -127,11 +119,6 @@ for (var i = 0; i < 5; i++) {
 fs.writeFileSync('Output Files/Matt_Test_PRESOL.txt', myCorpus.PRESOL);
 fs.writeFileSync('Output Files/Matt_Test_SRCSGT.txt', myCorpus.SRCSGT);
 fs.writeFileSync('Output Files/Matt_Test_COMBINE.txt', myCorpus.COMBINE);
-
-//write out title and description fields by sentence (topic model training)
-//  fs.write('Output Files/Matt_Test_PRESOL.csv', myCorpus.PRESOL, 'a');
-//  fs.write('Output Files/Matt_Test_SRCSGT.csv', myCorpus.SRCSGT, 'a');
-//  fs.write('Output Files/Matt_Test_COMBINE.csv', myCorpus.COMBINE, 'a');
 
 //write out master array of objects to JSON files - last file only?
 fs.writeFileSync('Output Files/Matt_Test.json', JSON.stringify(resultOutput));
