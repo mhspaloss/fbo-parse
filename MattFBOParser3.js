@@ -82,6 +82,11 @@ function isInteresting(element) {
 
 };
 
+//Populate myResult with the JSON records, sorted by FBO type
+//function fboSort() {
+//    for.each
+//}
+
 //set starting date to the first date for which I have a file
 
 
@@ -90,6 +95,13 @@ var myCorpus = {
     PRESOL: [''],
     SRCSGT: [''],
     COMBINE: [''],
+};
+
+//Create array of text objects to store corpus text
+var myResult = {
+    PRESOL: [],
+    SRCSGT: [],
+    COMBINE: [],
 };
 
 //JSON records from daily file
@@ -124,19 +136,27 @@ for (var i = 0; i < 5; i++) {
     //	var resultOutput.push(result);
     resultOutput = resultOutput.concat(result);
 
-    //Create corpus text by opportunity status.  Extract the title and description text
-    // to build topic model training files
-    result.forEach(function(element) {
-        myCorpus[Object.keys(element[0])[0]] += 'SUBJECTTAG ' + element[0][Object.keys(element[0])[0]]['SUBJECT'] + '\n' + element[0][Object.keys(element[0])[0]]['DESC'];
-    });
+    //Write out array of objects to JSON files by FBO type
+    result.forEach(writeRecords);
 
     //End for loop over all Files
 };
 
-//write out title and description fields by sentence (topic model training)
-fs.writeFileSync('Output Files/Matt_Test_PRESOL.txt', myCorpus.PRESOL);
-fs.writeFileSync('Output Files/Matt_Test_SRCSGT.txt', myCorpus.SRCSGT);
-fs.writeFileSync('Output Files/Matt_Test_COMBINE.txt', myCorpus.COMBINE);
+//Sort the resultOutput records into FBO types (e.g. PRESOL)
 
-//write out master array of objects to JSON files - last file only?
+//write out master array of sorted objects to JSON files
 fs.writeFileSync('Output Files/Matt_Test.json', JSON.stringify(resultOutput));
+fs.writeFileSync('Output Files/Matt_PRESOL.json', JSON.stringify(myResult['PRESOL']));
+fs.writeFileSync('Output Files/Matt_SRCSGT.json', JSON.stringify(myResult['SRCSGT']));
+fs.writeFileSync('Output Files/Matt_COMBINE.json', JSON.stringify(myResult['COMBINE']));
+
+//write out title and description fields by sentence (topic model training)
+//fs.writeFileSync('Output Files/Matt_Test_PRESOL.txt', myCorpus.PRESOL);
+//fs.writeFileSync('Output Files/Matt_Test_SRCSGT.txt', myCorpus.SRCSGT);
+//fs.writeFileSync('Output Files/Matt_Test_COMBINE.txt', myCorpus.COMBINE);
+
+//Write out JSON records by FBO type
+function writeRecords(element) {
+    myResult[Object.keys(element[0])[0]].push(element);
+    return;
+};
