@@ -117,7 +117,7 @@ var date = new Date('November 19, 2017'),
     y = date.getFullYear();
 
 // For loop over all files (assumes I have every day in the date range), process and then add output array to master to be written to the output files
-for (var i = 0; i < 5; i++) {
+for (var i = 0; i < 385; i++) {
     var curdate = new Date(y, m, d + i);
     var curMonth = ("0" + (curdate.getMonth() + 1)).slice(-2); //increment month by 1, add leading zero if month 1-9
     var curDay = ("0" + curdate.getDate()).slice(-2); //add leading zero if  day 1-9
