@@ -1,8 +1,9 @@
 {
-  "name": "fbo-parser",
-  "version": "0.0.1",
-  "description": "parses FBO FTP dumps",
-  "dependencies": {
-    "pegjs": "0.8.0"
-  }
+    "name": "fbo-parser",
+    "version": "0.0.1",
+    "description": "parses FBO FTP dumps",
+    "dependencies": {
+        "pegjs": "0.8.0",
+        "request": "^2.88.0"
+    }
 }
